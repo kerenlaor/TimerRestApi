@@ -1,0 +1,171 @@
+openapi: 3.0.3 # version of the specification
+info:
+  version: '1'
+  title: Open API Generator Spring Boot Example
+
+servers:
+  - url: http://localhost:8080
+
+tags:
+  - name: timer
+    description: everything about timer countdown actions
+
+
+paths:
+  /api/timers:
+    get:
+      summary: return parents information
+      tags:
+        - timer
+      operationId: getAllTimers
+      responses:
+        200:
+          description: represents all timers information
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/TimerResponse'
+        404:
+          $ref: '#/components/responses/404NotFoundTimer'
+        500:
+          $ref: '#/components/responses/500InternalServerError'
+  /api/timers/{id}:
+    get:
+      summary: Get number of seconds remaining in timer.
+      tags:
+        - timer
+      description: number of seconds remaining in a timer
+      operationId: getTimerCountdownById
+      parameters:
+        - $ref: '#/components/parameters/id'
+      responses:
+        200:
+          description: represents timer countdown seconds left by id
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/TimerCountdownResponse'
+        404:
+          $ref: '#/components/responses/404NotFoundTimer'
+        500:
+          $ref: '#/components/responses/500InternalServerError'
+  /api/timers/outpost:
+    post:
+      summary: post new timer request
+      tags:
+        - timer
+      description: this action post a new timer request
+      operationId: startNewTimerCountdown
+      responses:
+        200:
+          description: posting new timer
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/TimerCountdownResponse'
+        404:
+          $ref: '#/components/responses/404NotFoundTimer'
+        500:
+          $ref: '#/components/responses/500InternalServerError'
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/TimerRequest'
+components:
+  schemas:
+    TimerResponse:
+      type: object
+      description: this response shows all timers defined in the system
+      properties:
+        pageNumber:
+          type: integer
+        pageSize:
+          type: integer
+        timers:
+          type: array
+          items:
+            $ref: '#/components/schemas/TimerData'
+        totalRowCount:
+          type: integer
+    TimerCountdownResponse:
+      type: object
+      properties:
+        id:
+          type: string
+        numberOfSecondsLeft:
+          type: integer
+      description: Response of the parent.
+    TimerData:
+      type: object
+      properties:
+        id:
+          type: string
+        dateCreated:
+          type: string
+          format: date-time
+        hours:
+          type: integer
+        minutes:
+          type: integer
+        seconds:
+          type: integer
+        timeLeft:
+          type: integer
+        webhookUrl:
+          type: string
+        status:
+          type: string
+          enum:
+            - Started
+            - Finished
+    TimerRequest:
+      type: object
+      properties:
+        hours:
+          type: integer
+        minutes:
+          type: integer
+        seconds:
+          type: integer
+        webhookUrl:
+          type: string
+      description: an object represents timer post request
+    Error:
+      type: object
+      description: An object that can optionally include information about the error.
+      properties:
+        msg:
+          type: string
+          description: A detailed error message.
+        status_code:
+          type: integer
+          description: The integer representing the HTTP status code (e.g. 500, 404).
+  responses:
+    404NotFoundTimer:
+      description: The requested Timer wasn't found.
+      content:
+        application/json:
+          schema:
+            $ref: '#/components/schemas/Error'
+    500InternalServerError:
+      description: The requested Timer wasn't found.
+      content:
+        application/json:
+          schema:
+            $ref: '#/components/schemas/Error'
+  parameters:
+    id:
+      in: path
+      name: id
+      required: true
+      description: 'Timer identifier'
+      schema:
+        type: string
+    domainId:
+      in: path
+      name: domainId
+      required: true
+      description: 'domain identifier for webhook'
+      schema:
+        type: string
