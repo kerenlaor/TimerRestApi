@@ -20,7 +20,7 @@ repositories {
 dependencies {
 	implementation 'org.springframework.boot:spring-boot-starter-web'
 	// Springfox Swagger 2
-	implementation 'io.springfox:springfox-boot-starter:3.0.0'
+	//implementation 'io.springfox:springfox-boot-starter:3.0.0'
 
 	//the exclude was added for schema.required field
 	implementation('io.springfox:springfox-swagger2:3.0.0') {
@@ -34,6 +34,9 @@ dependencies {
 	implementation 'javax.annotation:javax.annotation-api:1.3.2'
 	implementation 'javax.servlet:javax.servlet-api:4.0.1'
 
+	implementation 'org.openapitools:jackson-databind-nullable:0.2.1'
+	implementation 'org.springdoc:springdoc-openapi-ui:1.7.0'
+
 	compileOnly 'org.projectlombok:lombok:1.18.30'
 	annotationProcessor 'org.projectlombok:lombok:1.18.30'
 
@@ -45,18 +48,26 @@ dependencies {
 openApiGenerate {
 	generatorName = 'spring'
 	inputSpec = "$rootDir/src/main/resources/timerApi.yaml"
-	outputDir = "$rootDir/src/main/java/target"
+	outputDir = "$buildDir/generated"
 	apiPackage = "com.schemas.timerRest"
 	modelPackage = "com.schemas.modelRest"
 	apiNameSuffix = "Rest"
 
 	configOptions = [
-			library: 'spring-boot',
-			interfaceOnly: 'true',
-			useBeanValidation: 'false',
-			serializableModel: 'true',
-			java17: 'true'
+			openApiNullable: 'false',
+			interfaceOnly: 'true'
 	]
+}
+
+//schemas are generated under build/generated in gradlew script.
+// making build/generated as path in the sources set will allow my classes under src/main/java
+//to import classes from build/generated
+sourceSets {
+	main {
+		java {
+			srcDirs = ['src/main/java', 'build/generated'] // Add the generated resources folder
+		}
+	}
 }
 
 tasks.named('test') {

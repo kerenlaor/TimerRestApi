@@ -6,8 +6,8 @@ import com.rest.timerRestApi.utilities.TimeCalculator;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.stereotype.Service;
-import target.src.main.java.com.schemas.modelRest.TimerCountdownResponse;
-import target.src.main.java.com.schemas.modelRest.TimerRequest;
+import com.schemas.modelRest.TimerCountdownResponse;
+import com.schemas.modelRest.TimerRequest;
 
 import java.time.LocalDateTime;
 import java.util.HashMap;
