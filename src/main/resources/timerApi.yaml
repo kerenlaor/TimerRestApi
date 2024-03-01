@@ -38,6 +38,7 @@ paths:
       operationId: getTimerCountdownById
       parameters:
         - $ref: '#/components/parameters/id'
+        - $ref: '#/components/parameters/pageNumber'
       responses:
         200:
           description: represents timer countdown seconds left by id
@@ -169,3 +170,10 @@ components:
       description: 'domain identifier for webhook'
       schema:
         type: string
+    pageNumber:
+      in: query
+      name: pageNumber
+      required: true
+      description: 'page number to get timers'
+      schema:
+        type: integer
