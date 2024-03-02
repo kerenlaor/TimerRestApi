@@ -1,5 +1,6 @@
 package com.rest.timerRestApi.services;
 
+import com.rest.timerRestApi.timerCounter.TimerCounter;
 import com.rest.timerRestApi.utilities.TimeCalculator;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -48,6 +49,14 @@ public class TimeHandler {
         TimerCountdownResponse timerCountdownResponse = new TimerCountdownResponse()
                 .id(timeUuid)
                 .numberOfSecondsLeft(totalNumberOfSeconds);
+        Thread timerCountDown = new TimerCounter(
+                idToTimerMap,
+                timeUuid,
+                lastPage,
+                totalNumberOfSeconds,
+                totalNumberOfSeconds);
+        timerCountDown.setDaemon(true);
+        timerCountDown.start();
 
         return timerCountdownResponse;
     }

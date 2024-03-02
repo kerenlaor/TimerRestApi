@@ -2,13 +2,14 @@ package com.rest.timerRestApi.models;
 
 import lombok.*;
 
+import java.time.Instant;
 import java.time.LocalDateTime;
 
 @Data
 @AllArgsConstructor
-public class TimerData {
+public class TimerDataModel {
     private String Id;
-    private LocalDateTime dateCreated;
+    private LocalDateTime createdDate;
     private int hours;
     private int minutes;
     private int seconds;
