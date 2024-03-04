@@ -133,6 +133,18 @@ components:
         webhookUrl:
           type: string
       description: an object represents timer post request
+    TimerWebhookResponse:
+      type: object
+      properties:
+        message:
+          type: string
+      description: Response of the parent.
+    WebhookTimerRequest:
+      type: object
+      properties:
+        message:
+          type: string
+      description: an object represents webhook timer post request
     Error:
       type: object
       description: An object that can optionally include information about the error.
