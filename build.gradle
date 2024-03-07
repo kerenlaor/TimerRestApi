@@ -74,3 +74,19 @@ sourceSets {
 tasks.named('test') {
 	useJUnitPlatform()
 }
+
+// Define a custom task to generate the Swagger schema
+task generateSwagger(type: org.openapitools.generator.gradle.plugin.tasks.GenerateTask) {
+	generatorName = 'spring'
+	inputSpec = "$rootDir/src/main/resources/timerApi.yaml"
+	outputDir = "$buildDir/generated"
+	apiPackage = "com.schemas.timerRest"
+	modelPackage = "com.schemas.modelRest"
+	apiNameSuffix = "Rest"
+	configOptions = [
+			openApiNullable: 'false',
+			interfaceOnly: 'true'
+	]
+}
+
+compileJava.dependsOn generateSwagger
